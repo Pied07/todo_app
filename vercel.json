@@ -1,4 +1,5 @@
 {
+    "version":2,
     "builds": [{
         "src": "TODO/wsgi.py",
         "use": "@vercel/python",
