@@ -107,23 +107,6 @@ def register(request):
     form = RegistrationForm()
     return render(request,'register.html',{'form':form})
 
-def get_token(username,password):
-    token_url = "http://127.0.0.1:8000/api/token/"
-    payload = {
-        'username':username,
-        'password':password
-    }
-    try:
-        response = requests.post(token_url,json=payload)
-        if response.status_code == 200:
-            access_token = response.json().get('access')
-            refresh_token = response.json().get('refresh')
-            return access_token,refresh_token
-        else:
-            return None
-    except requests.exceptions.RequestException as e:
-        return None
-
 def Login(request):
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
@@ -131,12 +114,8 @@ def Login(request):
             user = form.get_user()
             username_give = user.username
             password_give = request.POST['password']
-            access_token,refresh_token = get_token(username_give,password_give)
-            if access_token:
-                auth_login(request,user)
-                return redirect('home')
-            else:
-                form.add_error(None,"Authentication Failed please check credentials again!")
+            auth_login(request,user)
+            return redirect('home')
     else:
         form = LoginForm()
     return render(request,'login.html',{'form':form})
