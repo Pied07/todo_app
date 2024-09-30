@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Api Documentations{% endblock %}
+
+{% block content %}
+<style>
+    .api {
+        width: 60%;
+    }
+    pre {
+        background-color: black;
+        padding: 10px;
+        border-radius: 5px;
+        color: white;
+        white-space: pre;
+        overflow-x: auto;
+    }
+    code {
+        overflow-x: auto;
+        width:100%;
+    }
+    com {
+        color: grey;
+    }
+    a {
+        text-decoration: None;
+    }
+</style>
+    <div class="api">
+        <center><H1 style="color:blue;">API Documentations</H1></center><hr>
+        <div class="contents">
+                <ul>
+                    <li><a href="#Introduction">Inteoduction</a></li>
+                    <li><a href="#start">Getting Started</a></li>
+                    <li><a href="#usage">Usage</a></li>
+                    <li><a href="#fields">JSON Fields</a></li>
+                    <li><a href="#warnings">Warnings</a></li>
+                    <li><a href="#License">License</a></li>
+                </ul>
+        </div>
+        <div id="Introduction">
+            <center><H1>What is TODO App...</H1></center><hr>
+            <p>This is a Simple Todo App for different users to log in and write their Tasks that they were abour to do. Basically everyone in this planet thinks what they are going to do throughout the day just after they wake up, and nearly everytime by the end of the day they forget some tasks which might be very crutial. For this many problems might occur so we came up with an app, rather API to get the records of everydays work. <br><br> In Many ways you can use the this app either by creating your own app and using this api or using this app itself. Never forget your Daily Tasks again. Have Fun <br><br> <b>Note: </b>This is just a demo Documentation Page as this app is just a self project.</p>
+        </div>
+        <div id="start">
+            <center><H1>Getting Started</H1></center><hr>
+            <p><b>Firstly: </b>For using our API you need only one Packase, i.e. requests. <br><br>To install this package you just need to type the below command in you terminal or CMD where ever you want to install and run your project. <br><pre><code>
+                pip install requests
+            </code></pre><br><br> Once it is installed you are set to go to the api key section to get your API Key and Access Key <a href="{% url "task_api" %}">here</a> <br><br>Now copy the API Key and Access Key and store it in a variable in your app like. <br><br><pre><code>
+                API_KEY = "your_api_key"                  <com>#Replace your_api_key with the API key given in the api page</com>
+                ACCESS_KEY = "your_access_Key"            <com>#Replace your_api_key with the Access key given in the api page</com>
+            </code></pre> <br><br> <b>Note: </b>If you don't find the access key kindly refresh the page. <br><br> Now you are all set for Going to the Usage section</p>
+        </div>
+        <div id="usage">
+            <center><H1>Usage</H1></center><hr>
+            <p>Congradulations Coming this far, Now you are just few steps ahead to use the API Successfully. <br><br>There are Basically <b>five</b> HTTP Requests that you can perform, Lets discuss how we can use each of them one by one. <br><br><br><h3>Get All Request</h3> Get request generally means to Fetch All the Results, Or you can also Fetch specific result at a time, we will discuss it in just a sec, First Let's Learn how to Fetch All results Successfully. <br><br>First Things First, Before getting into the Requests you need to declare a global Dictionary, name anything you like but by convention try to user <b>headers</b> as it's name: <pre><code>
+                <com># Declaring headers Globally</com>
+                <com># If you are in Django Environment you can declare this variable in settings.py of your Project Folder.</com>
+                headers = {
+                    'Authorization': f'Bearer {ACCESS_KEY}',              <com># Remember the Access Key that we Already Created in Getting Started Section? This is that Access Key </com>
+                    'Content-Type':'application/json'
+                }
+            </code></pre> <br><br> Now Let's Set URL for getting the Response:<pre><code>
+                API_URL = f"http://127.0.0.1:8000/tasks_lists/?api_key={API_KEY}"                        <com># Url set with the API Key, again which we Already declared Previously, using this URL we can GET,POST Tasks</com>
+                API_SELECTIVE_URL = "http://127.0.0.1:8000/tasks_lists"              <com># Now Here Comes the Interesting Part, Using this URL we Can GET,POST,DELETE,UPDATE the tasks.</com>
+            </code></pre><br><br> Now You are All set to Fetch All the Data or Rather Tasks. Let's See How to Do it. <br><br>Create a Function say get_tasks: <pre><code>
+                def get_tasks():
+                    response = requests.get(API_URL,headers=headers)          <com># Pass the headers that we have created just like it is shown. It is mandatory, if you don't pass the Header it will not work</com>
+                    <com># Also Note that if you get error even after correctly giving the header as shown please do refresh the API Page again and copy the access Token , Since It might be the situation where your token got Expired(By Default the Access Token Will expire every 30 days, so you have to keep changing the token again and again)</com>
+                    if response.status_code == 200:
+                        tasks = response.json()
+                        print("Task Items: ",tasks)
+                    else:
+                        print("Failed to fetch Task,May be the access token is expired try getting it again from the site.",response.status_code)
+            </code></pre> <br><br> This is How you can Fetch All the Tasks Succesfully. <br><br> Now Lets Check How we can fetch a specific Task at a time: <br><br><br><h3>Get Specific Request</h3> Now to get only the task that we want is by the Following Method. <br><br>Let's make another function nameing get_task: <pre><code>
+                def get_task(task_id):             <com># Pass task_id as the id of the task you want to get</com>
+                    response = requests.get(f"{API_SELECTIVE_URL}/{task_id}/?api_key={API_KEY}",headers=headers)           <com># Just Change the URL from API_URL to API_SELECTIVE_URL and the remaining as shown, since for getting selective Task means to pass the Id so a Little Change in URL and Nothing Else</com>
+                    if response.status_code == 200:
+                        tasks = response.json()
+                        print("Task Items: ",tasks)
+                    else:
+                        print("Failed to fetch Task,May be the access token is expired try getting it again from the site.",response.status_code)
+            </code></pre><b>Note: how we changed the URL from API_URL to {API_SELECTIVE_URL}/{task_id}/?api_key={API_KEY} since we needed to give the Task Id in the url too.</b><br><br>This is How we can successfully Get a selected Task Result. <br><br> Now Let's See How We Can POST request from our API. <br><br><br><h3>POST Request</h3>For posting Request we need to make a JSON object that can be passed in requests. For That we will use Python Dictionary Once again to create a JSON object. Let's see how to do that. <br><br>Let's make a function namely add_tasks: <pre><code>
+                def add_tasks():
+                    payload = {
+                        'task_name':'Sleep',
+                        'task_status':True,         <com># This Field is Optional You might also want to skip this field if you want the status to be False Since by default this is set to False. True means the task is Completed and False means the task is Pending.</com>
+                        'user':'18'
+                    }                      <com># This Payload Dictionary will act as JSON object once we pass it to json as shown below.</com>
+                    response = requests.post(API_URL,json=payload,headers=headers)       <com># Passing the payload as json in the request.</com>
+                    if response.status_code == 201:
+                        print("Task Added: ",response.json())
+                    else:
+                        print('Failed to Add Task,May be the access token is expired try getting it again from the site. ',response.status_code)
+            </code></pre>This is How you can Add as many Task as you want in our API. <br><br> Now Let's see how we can Update a given Task. <br><br><br><h3>Update Task</h3> Now for Updating and deleting we will be needing that API_SELECTIVE_URL since for these tasks id must be passed. <br>Without anymore delay let's get into it. <pre><code>
+                def update_task(task_id):
+                    payload = {
+                        'task_name':'Sleep',
+                        'user':'18'
+                    }          <com># task_name and user are mandatory field</com>
+                    response = requests.put(f"{API_ID_URL}/{task_id}/?api_key={API_KEY}", json=payload,headers=headers)
+                    if response.status_code == 200:
+                        print('Task item Updated: ',response.json())
+                    else:
+                        print('Failed to Update Task,May be the access token is expired try getting it again from the site. ',response.status_code)
+            </code></pre><br>By implementing this function you can easily Update a task is the id is valid else it will show error. <br><br>Now Let's Discuss one thing, as you can see both task_name and user field is mandatory field in update now soppose if we just want to change the status from False to True, we have to give task_name and user even if we are not updating it. This can be Annoying, why should we give all the fields if we are not even updating most of them. <br>For This we have another request called <b>PATCH</b> it is specifically used for the said kind of situation. Now Let's See How We can Use Patch for Updating the same Task. <br><br>For This Let's Take the Same Task Above and Just change it to patch method: <pre><code>
+                def update_partial_task(task_id):
+                    payload = {
+                        'task_status':False
+                    }          <com># Note that we did'nt use task_name and user field.</com>
+                    response = requests.patch(f"{API_ID_URL}/{task_id}/?api_key={API_KEY}", json=payload,headers=headers)          <com># From put it is changed to patch(requests.patch) for partial Update.</com>
+                    if response.status_code == 200:
+                        print('Task item Updated: ',response.json())
+                    else:
+                        print('Failed to Update Task,May be the access token is expired try getting it again from the site. ',response.status_code)
+            </code></pre>This is How we can successfully update a task Partially. <br><br> Now Let's Move on to the Last but not the least Method, <b>DELETE</b>: <br><br><br><h3>Delete Task</h3>Again for deleting we will use the API_SELECTIVE_URL since it also requires task_id. <br><br>Let's see how to implement delete function. <br><br>Let's make a function name delete_task: <pre><code>
+                def delete_task(task_id):
+                    response = requests.delete(f"{API_ID_URL}/{task_id}/?api_key={API_KEY}",headers=headers)
+                    if response.status_code == 204:
+                        print("Task Item Deleted")
+                    else:
+                        print("Failed To Delete the Task,May be the access token is expired try getting it again from the site. ",response.status_code)
+            </code></pre>By implementing this funtion you can successfully delete any task that exists. <br><br> Now for calling All these functions you can use __main__ in python, Like: <pre><code>
+                if __name__ == '__main__':
+                    add_task()
+                    get_tasks()
+                    delete_task(1)         <com># for example I took 1 as the task_id and passed it in the function, in your case it might be different.</com>
+            </code></pre> <br><br> Now in Terminal the Tasks might look like: <pre><code>
+                Task Items:  [{'id': 37, 'task_name': 'Sleep', 'task_status': False, 'created_at': '2024-09-28T16:18:18.995110Z', 'user': 18}, {'id': 39, 'task_name': 'Repeat', 'task_status': False, 'created_at': '2024-09-28T16:19:33.713778Z', 'user': 18}, {'id': 40, 'task_name': 'Sleep', 'task_status': False, 'created_at': '2024-09-28T16:38:29.752210Z', 'user': 18}, {'id': 41, 'task_name': 'Sleep', 'task_status': True, 'created_at': '2024-09-28T16:44:59.622927Z', 'user': 18}]
+            </code></pre> so this kind of <b>JSON</b> you will get as result. In your case the Tasks might be different. <br>Also <b>Note</b> here user does'nt mean user name, its user_id so it will always be number.</p>
+        </div>
+        <div id="fields">
+            <center><H1>JSON Fields</H1></center><hr>
+            <p>You might have already found out the JSON fields in this API. Even if you did'nt let me help you. <br><br><h3>Fields</h3> JSON fields are: <pre><code>
+                [
+                    {
+                        'id':'id',           <com># Should be integet and does'nt accept value, it is given automatically</com>
+                        'task_name':'Any Task Name You want to give',
+                        'task_status':True/False,    <com># as Already mentioned, Boolean Field, not a required field, by default is set to False</com>
+                        'created_at':'date_time_field',          <com>Again not a required field, automatically saved the time when the task was created</com>
+                        'user':'1'        <com>this is a required field, you have to set unique user id here</com>
+                    }
+                ]
+            </code></pre> These are all the Fields present in our API, Use it Accordingly.</p>
+        </div>
+        <div id="warnings">
+            <center><H1>Warnings</H1></center><hr>
+            <h3>Warnings:</h3>
+            <p>1. When ever you get error try changing the Access Key. <br>2. If you don't find your access key in the API page try refreshing the page. <br>3. After every 30 days you have to change the access key.</p>
+        </div>
+        <div id="License">
+            <center><H1>Licensing</H1></center><hr>
+            <p>&copy Sandipan Adhikary</p>
+        </div>
+    </div>
+{% endblock %}

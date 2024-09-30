@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}API Key{% endblock %}
+
+{% block content %}
+    <style>
+        h3 {
+            word-wrap: break-word;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            max-width: 50rem;
+        }
+        .btn {
+            border-radius: 15px;
+            border: 2px solid #0055a9;
+            background-color: white;
+            cursor: pointer;
+            text-decoration: None;
+            padding:5px;
+            color: black;
+        }
+        .btn:hover {
+            background-color: yellow;
+            color: red;
+        }
+    </style>
+    <div class="container">
+        <center><H1 style="color:blue;">{{user.username}} Your API Key is Ready</H1></center><hr>
+        <center><h3>Your API Key is: <strong style="color:red;" id="apiKey">{{api_key}}</strong></h3><button onclick="copyapi()">copy</button></center>
+        <center><h3>Your Access Key is: <strong style="color:red;" id="accessKey">{{access}}</strong></h3><button onclick="copyaccess()">copy</button></center>
+        {% comment %} <center><h3>Your Refresh Key is: <strong style="color:red;" id="refreshKey">{{refresh}}</strong></h3><button onclick="copyrefresh()">copy</button></center> {% endcomment %}
+        <center><p><b style="color:red;">Important Note:</b> Don't Share this API Key or Access Key with Anyone.</p></center>
+        <center><a href="{% url "api_docs" %}" class="btn">Show Api Documentation</a></center>
+    </div>
+
+    <script>
+        function copyapi() {
+            const texttocopy = document.getElementById('apiKey').innerText;
+            navigator.clipboard.writeText(texttocopy).then(() => {
+                alert("API Key Copied!");
+            }).catch(err => {
+                alert("Failed to Copy: ",err);
+            });
+        }
+        function copyaccess() {
+            const texttocopy = document.getElementById('accessKey').innerText;
+            navigator.clipboard.writeText(texttocopy).then(() => {
+                alert("Access Key Copied!");
+            }).catch(err => {
+                alert("Failed to Copy: ",err);
+            });
+        }
+        {% comment %} function copyrefresh() {
+            const texttocopy = document.getElementById('refreshKey').innerText;
+            navigator.clipboard.writeText(texttocopy).then(() => {
+                alert("Refresh Key Copied!");
+            }).catch(err => {
+                alert("Failed to Copy: ",err);
+            });
+        } {% endcomment %}
+    </script>
+
+{% endblock %}

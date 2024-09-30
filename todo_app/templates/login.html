@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<style>
+    .btn {
+        border-radius: 15px;
+        border: 2px solid #0055a9;
+        background-color: white;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: yellow;
+    }
+    form {
+        justify-content: center;
+        display:flex;
+        flex-direction: column;
+        margin: 30px;
+        align-items:center;
+    }
+</style>
+{% for e in error %}
+{{e}}
+{% endfor %}
+
+<div class="container">
+    <center><H1 style="color:blue;">Login Page</H1></center><hr>
+    <form method="post" id="loginForm">
+        {% csrf_token %}
+        {{form.username}} <br>
+        {{form.password}}
+        <p>Not a User? <a href="{% url "register" %}">Register Here</a></p>
+        <button class="btn" type="submit">Submit</button>
+    </form>
+</div>
+
+{% endblock %}

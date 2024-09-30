@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+<style>
+    .btn {
+        border-radius: 15px;
+        border: 2px solid #0055a9;
+        background-color: white;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: yellow;
+    }
+    form {
+        justify-content: center;
+        display:flex;
+        flex-direction: column;
+        margin: 30px;
+    }
+</style>
+
+<div class="container">
+    <center><H1 style="color:blue;">Registration Page</H1></center><hr>
+    <form method="post">
+        {% csrf_token %}
+        {{form.username}} <br>
+        {{form.password1}} <br>
+        {{form.password2}} <br>
+        <p>Already a User? <a href="{% url "login" %}">Login Here</a></p>
+        <button class="btn">Submit</button>
+    </form>
+</div>
+
+{% endblock %}

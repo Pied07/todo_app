@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+    .container {
+        justify-content: center;
+        max-width:500px;
+        margin: auto;
+        margin-top:50px;
+        border: 2px solid black;
+        padding: 10px;
+    }
+    .head-content {
+        display: flex;
+        margin: 2px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+    th, td {
+        padding: 12px;
+        text-align:center;
+        border-bottom: 1px solid black;
+    }
+    th {
+        background-color: #0055a9;
+        color: white;
+    }
+    thead, tr {
+        padding: 12px;
+        margin: 20px 0;
+    }
+    tr:hover {
+        background-color: #00f3ff;
+    }
+    .btn {
+        border-radius: 15px;
+        border: 2px solid #0055a9;
+        background-color: white;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: yellow;
+    }
+    .btn-del {
+        background-color:red;
+        color:white;
+        border-radius: 15px;
+        margin-left: 2px;
+        cursor: pointer;
+        transition: background-color 0.3 ease, color 0.3 ease;
+    }
+    .btn-del:hover {
+        background-color: #a91a00;
+        color:yellow;
+                
+    }
+    .logout {
+        text-decoration: None;
+        background-color: red;
+        padding: 10px;
+        border-radius: 25px;
+        color: white;
+        font-weight: bold;
+        font-size:20px;
+        margin-left:20px;
+        box-shadow: 5px 5px 10px black;
+        transition: transform 0.8s ease, box-shadow 0.8s ease, color 0.8s ease;
+    }
+    .logout:hover {
+        transform: translateY(-5px);
+        box-shadow: 15px 15px 20px black;
+        color: yellow;
+    }
+    .api {
+        text-decoration: None;
+        background-color: blue;
+        padding: 10px;
+        border-radius: 25px;
+        color: white;
+        font-weight: bold;
+        font-size:20px;
+        margin-left:20px;
+        box-shadow: 5px 5px 10px black;
+        transition: transform 0.8s ease, box-shadow 0.8s ease, color 0.8s ease;
+    }
+    .api:hover {
+        transform: translateY(-5px);
+        box-shadow: 15px 15px 20px black;
+        color: yellow;
+    }
+    hr {
+        border: 1px solid black;
+        width:100%;
+    }
+</style>
+<center><H1 style="color:blue; margin-top:10px;">TODO APP</H1></center><hr>
+<center><H2>Welcome {{user.username}}</H2></center><hr>
+<a class="logout" href="{% url "logout" %}">Logout</a><br>
+<a class="api" id="getDataBtn" href="{% url "task_api" %}">Api</a>
+<div class="container">
+    <center><H2>Task Lists</H2></center><hr>
+    <div class="head-content">
+        <form method="post">
+            {% csrf_token %}
+            {{form.task_name}}
+            <button class="btn">Submit</button>
+        </form>
+        <form action="{% url "delete_all" %}" method="post">
+            {% csrf_token %}
+            <button class="btn-del">Delete All</button>
+        </form>
+    </div>
+    <hr>
+    <table>
+        <thead>
+            <th>Task Name</th>
+            <th>Task Status</th>
+            <th>Completed?</th>
+            <th>Edit</th>
+            <th>Delete Task?</th>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{task.task_name}}</td>
+                <td>
+                    {% if task.task_status %}
+                        <span>Completed</span>
+                    {% else %}
+                        <span>Pending</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="{% url "home" %}" method="post">
+                        {% csrf_token %}
+                        <button  class="btn" name="finished" value="{{task.id}}">{% if task.task_status %}Pending {% else %} Complete {% endif %}</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{% url "edit" task.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{% url "home" %}" method="post">
+                        {% csrf_token %}
+                        <button  class="btn" name="delete" value="{{task.id}}">Delete</button>
+                    </form>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

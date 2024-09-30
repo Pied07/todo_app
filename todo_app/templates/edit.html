@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Edit{% endblock %}
+
+{% block content %}
+<style>
+    form {
+        justify-content: center;
+        display:flex;
+        flex-direction: column;
+        margin: 30px;
+    }
+</style>
+
+<div class="container">
+    <center><H1 style="color:blue;">Edit Task</H1></center><hr>
+    <form method="post">
+        {% csrf_token %}
+        {{form.task_name}} <br>
+        <button>Submit</button>
+    </form>
+</div>
+
+{% endblock %}
