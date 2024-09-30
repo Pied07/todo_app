@@ -1,5 +1,4 @@
 {
-    "version":2,
     "builds": [{
         "src": "TODO/wsgi.py",
         "use": "@vercel/python",
@@ -9,16 +8,6 @@
         {
             "src": "/(.*)",
             "dest": "TODO/wsgi.py"
-        }
-    ],
-    "headers": [
-        {
-            "source": "/(.*)",
-            "headers": [
-                {"key": "Access-Control-Allow-Origin","value":"*"},
-                {"key": "Access-Control-Allow-Methods","value":"GET,POST,PUT,PATCH,DELETE,OPTIONS"},
-                {"key": "Access-Control-Allow-Headers","value":"Authorization,Content-Type"}
-            ]
         }
     ]
 }
