@@ -43,11 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "corsheaders",
     'rest_framework',
     'rest_framework_api_key',
     'rest_framework_simplejwt',
     'todo_app',
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -62,25 +62,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'TODO.urls'
-CORS_ALLOW_ALL_ORIGINS: True
-CORS_ALLOW_HEADERS = (
-    "accept",
-    "authorization",
-    "content-type",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-)
-CORS_ALLOW_METHODS = (
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-)
-CORS_EXPOSE_HEADERS = ['Authorization','Content-Type']
-CORS_ALLOW_CREDENTIALS = True
 
 TEMPLATES = [
     {
@@ -211,3 +192,25 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+# Cors Settings
+
+CORS_ALLOW_ALL_ORIGINS: True
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+)
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+CORS_EXPOSE_HEADERS = ['Authorization','Content-Type']
+CORS_ALLOW_CREDENTIALS = True
