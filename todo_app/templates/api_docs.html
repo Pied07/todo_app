@@ -61,8 +61,8 @@
                     'Content-Type':'application/json'
                 }
             </code></pre> <br><br> Now Let's Set URL for getting the Response:<pre><code>
-                API_URL = f"http://127.0.0.1:8000/tasks_lists/?api_key={API_KEY}"                        <com># Url set with the API Key, again which we Already declared Previously, using this URL we can GET,POST Tasks</com>
-                API_SELECTIVE_URL = "http://127.0.0.1:8000/tasks_lists"              <com># Now Here Comes the Interesting Part, Using this URL we Can GET,POST,DELETE,UPDATE the tasks.</com>
+                API_URL = f"https://todo-app-silk-mu.vercel.app/tasks_lists/?api_key={API_KEY}"                        <com># Url set with the API Key, again which we Already declared Previously, using this URL we can GET,POST Tasks</com>
+                API_SELECTIVE_URL = "https://todo-app-silk-mu.vercel.app/tasks_lists"              <com># Now Here Comes the Interesting Part, Using this URL we Can GET,POST,DELETE,UPDATE the tasks.</com>
             </code></pre><br><br> Now You are All set to Fetch All the Data or Rather Tasks. Let's See How to Do it. <br><br>Create a Function say get_tasks: <pre><code>
                 def get_tasks():
                     response = requests.get(API_URL,headers=headers)          <com># Pass the headers that we have created just like it is shown. It is mandatory, if you don't pass the Header it will not work</com>
